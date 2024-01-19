@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuração de Rifa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #000;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        form {
+            width: 70%;
+            background-color: #f8f6f6;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h2 {
+            color: #070707;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            text-align: left;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border-radius: 5px;
+            border: 1px solid #555;
+            color: #000;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 12px 20px;
+            border: none;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        i {
+            margin-right: 5px;
+        }
+
+        #linkGerado {
+            margin-top: 15px;
+            color: #4CAF50;
+            font-weight: bold;
+            display: block;
+            word-wrap: break-word; /* Quebra de linha no link longo */
+            text-align: center;
+        }
+
+        @media screen and (max-width: 600px) {
+            form {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <form>
+        <h2>Configuração de Rifa</h2>
+
+        <label for="valorRifa">Valor da Rifa:</label>
+        <input type="number" id="valorRifa">
+
+        <label for="quantidadeBilhetes">Quantidade de Bilhetes:</label>
+        <input type="number" id="quantidadeBilhetes">
+
+        <label for="imagemRifa">URL da Imagem da Rifa:</label>
+        <input type="text" id="imagemRifa">
+
+        <label for="tituloRifa">Título da Rifa:</label>
+        <input type="text" id="tituloRifa">
+
+        <button type="button" onclick="gerarLink()">
+            <i class="fas fa-save"></i> Salvar Configurações
+        </button>
+
+        <div id="linkGerado"></div>
+
+        <script>
+            function gerarLink() {
+                var valorRifa = document.getElementById("valorRifa").value;
+                var quantidadeBilhetes = document.getElementById("quantidadeBilhetes").value;
+                var imagemRifa = document.getElementById("imagemRifa").value;
+                var tituloRifa = document.getElementById("tituloRifa").value;
+
+                var configuracoes = {
+                    valorRifa: valorRifa,
+                    quantidadeBilhetes: quantidadeBilhetes,
+                    imagemRifa: imagemRifa,
+                    tituloRifa: tituloRifa
+                };
+
+                localStorage.setItem('configuracoesRifa', JSON.stringify(configuracoes));
+
+                // Gerar um link para a página "vender-rifas.html" com base nas configurações salvas
+                var link = 'vender-rifas.html?config=' + encodeURIComponent(JSON.stringify(configuracoes));
+
+                // Exibir o link ao lado do botão
+                var linkGerado = document.getElementById("linkGerado");
+                linkGerado.innerHTML = "Link para venda:<br><a href='" + link + "' target='_blank'>" + link + "</a>";
+            }
+        </script>
+    </form>
+</body>
+</html>

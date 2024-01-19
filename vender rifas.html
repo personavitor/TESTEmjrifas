@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eo_MJrifas</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="Imagens/icons8-ticket-16.png" type="image/x-icon">
+</head>
+<body>
+
+<header class="menuprincipal">
+    <div class="menu-icon" onclick="toggleMenu()">☰</div>
+   
+    <ul>
+        <li class="sections"> Galeria de Premios</li>
+        <li class="sections">Faça sua parceria</li>
+        <li class="sections">Login</li>
+    </ul>
+
+    <h1></h1>
+
+
+    </header>
+    
+    <div class="container">
+        <img src="Imagens/motociclista-em-uma-bicicleta_7502-8835.jpg" alt="">
+        <h2 class="titulorifa"></h2>
+        
+        
+        <!--Botoes de sugestao de compra-->
+        <div id="suggestions">
+            <strong>Mais cotas:</strong>
+            <button onclick="selectSuggestion(5)">5+</button>
+            <button onclick="selectSuggestion(20)">20+</button>
+            <button onclick="selectSuggestion(50)">50+</button>
+            <button onclick="selectSuggestion(100)">100+</button>
+            <button onclick="selectSuggestion(500)">500+</button>
+            <button onclick="selectSuggestion(1000)">1000+</button>
+        </div>
+        
+        <div id="buy-form">
+            <label for="numTickets"><strong>Quantidade de Bilhetes:</strong></label>
+            <input type="number" id="numTickets" min="1" required>
+            <button  onclick="buyTickets()"><strong>Reservar bilhetes</strong></button>
+        </div>
+        
+        <div id="leaderboard">
+            <h3>Top 3 Compradores</h3>
+            <div id="leaderboardBody"></div>
+        </div>
+   
+
+<script>
+    function toggleMenu() {
+        var menu = document.querySelector('.menuprincipal ul');
+        menu.classList.toggle('show');
+    }
+
+    var buyers = [];
+
+    function selectSuggestion(quantity) {
+        var numTicketsInput = document.getElementById("numTickets");
+        numTicketsInput.value = parseInt(numTicketsInput.value) + quantity;
+    }
+
+    function buyTickets() {
+        var numTickets = parseInt(document.getElementById("numTickets").value);
+
+        var buyerName = prompt("Digite seu nome:");
+        if (buyerName && numTickets > 0) {
+            var buyer = { name: buyerName, tickets: numTickets };
+            buyers.push(buyer);
+
+            updateLeaderboard();
+            alert("Compra realizada com sucesso!");
+        } else {
+            alert("Por favor, insira um nome válido e uma quantidade válida de bilhetes.");
+        }
+    }
+
+    function updateLeaderboard() {
+        buyers.sort(function (a, b) {
+            return b.tickets - a.tickets;
+        });
+
+        var leaderboardBody = document.getElementById("leaderboardBody");
+        leaderboardBody.innerHTML = "";
+
+        for (var i = 0; i < Math.min(3, buyers.length); i++) {
+            var position = i + 1;
+            var buyer = buyers[i];
+
+            var buyerInfo = document.createElement("div");
+            buyerInfo.className = "buyer-info";
+            buyerInfo.innerHTML = "<strong>Posição:</strong> " + position +
+                                  "<br><strong>Comprador:</strong> " + buyer.name +
+                                  "<br><strong>Bilhetes Comprados:</strong> " + buyer.tickets;
+
+            leaderboardBody.appendChild(buyerInfo);
+        }
+    }
+//Essa parte é responsável por atualizar elementos da página
+
+document.addEventListener("DOMContentLoaded", function() {
+        // Recuperar configurações salvas
+        var configuracoesSalvas = localStorage.getItem('configuracoesRifa');
+        if (configuracoesSalvas) {
+            var configuracoes = JSON.parse(configuracoesSalvas);
+
+            // Atualizar valores na página de venda de rifas
+            document.querySelector(".container img").src = configuracoes.imagemRifa;
+            document.querySelector(".container h2").innerText = "Adquira sua rifa agora por: " + configuracoes.valorRifa;
+            document.getElementById("quantidadeBilhetes").setAttribute("placeholder", "Quantidade de Bilhetes: " + configuracoes.quantidadeBilhetes);
+            document.querySelector(".container h1").innerText = configuracoes.tituloRifa;
+        }
+    });
+
+
+</script>
+
+
+
+    </div> 
+</body>
+</html>
